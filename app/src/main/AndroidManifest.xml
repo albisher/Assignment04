@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".GlobalUser"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -24,6 +25,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.fau.ce.group8.assignment04c.Start" />
+        </activity>
+        <activity
+            android:name=".Page2"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".Page3"
+            android:label="@string/app_name" >
         </activity>
     </application>
 

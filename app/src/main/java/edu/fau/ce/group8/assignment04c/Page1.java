@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class Page1 extends AppCompatActivity {
@@ -19,6 +22,11 @@ public class Page1 extends AppCompatActivity {
     protected TextView age;
     protected SeekBar sBar;
 
+    private RadioGroup radiogroup;
+    private RadioButton male, female;
+
+    private Switch mode;
+
     protected int sBarValue = 0;
     protected String s = null;
 
@@ -26,6 +34,13 @@ public class Page1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page1);
+
+        mode = (Switch) findViewById(R.id.switch1);
+        mode.setChecked(false);
+
+        radiogroup = (RadioGroup) findViewById(R.id.radiogroup);
+        male = (RadioButton) findViewById(R.id.radiomale);
+        female = (RadioButton) findViewById(R.id.radiofemale);
 
         restart = (Button) findViewById(R.id.restart);
         restart.setOnClickListener(startListener);
@@ -58,13 +73,40 @@ public class Page1 extends AppCompatActivity {
         });
     }
 
+
     private View.OnClickListener submitListener = new View.OnClickListener() {
         public void onClick(View v) {
+
+            GlobalUser gN = (GlobalUser)getApplication();
+            //submitF();
+            gN.setName(name.getText().toString());
+            gN.setPass(pass.getText().toString());
+            gN.setAge(age.getText().toString());
+
+            int selectedId = radiogroup.getCheckedRadioButtonId();
+            if (selectedId == male.getId()){
+                gN.setGender("Male");}
+            if (selectedId == female.getId()){
+                gN.setGender("Female");
+            }
+
+            if(mode.isChecked()){
+                gN.setDiff(1);
+            }
+            else {
+                gN.setDiff(0);
+            }
+
+
             submitF();
         }
     };
 
+
+
     private void submitF() {
+        Intent p2 = new Intent(Page1.this, Page2.class );
+        startActivity(p2);
 
     }
 
