@@ -22,6 +22,7 @@ public class Page3 extends AppCompatActivity {
     private Vector<String> nameArray = new Vector();
 
     private GlobalUser gN;
+    private int pos;
     //private int levelArray[] = new int[]
     //LinearLayout layout;
     //LinearLayout.LayoutParams layoutParams;
@@ -76,7 +77,7 @@ public class Page3 extends AppCompatActivity {
 
 
 
-        int pos;
+
         for (i = 0; i<arrSize; i++)
         {
             if(currentLevel > gN.getLevelArray(i))
@@ -121,7 +122,13 @@ public class Page3 extends AppCompatActivity {
             btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             btnTag.setText(nameArray[i] + " Level " + levelArray[i]);
             btnTag.setId(i);
+
+
             layout.addView(btnTag);
+
+//            if ( pos == i ) {
+//            }
+
             //((Button) findViewById(i)).setOnClickListener(this);
         }
 
