@@ -1,6 +1,7 @@
 package edu.fau.ce.group8.assignment04c;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Vector;
 
 import static edu.fau.ce.group8.assignment04c.R.id.linearLayout3;
@@ -18,13 +21,17 @@ public class Page3 extends AppCompatActivity {
     private Vector<Integer> levelArray = new Vector();
     private Vector<String> nameArray = new Vector();
 
+    private GlobalUser gN;
     //private int levelArray[] = new int[]
     //LinearLayout layout;
     //LinearLayout.LayoutParams layoutParams;
+    private View.OnClickListener homeListener = new View.OnClickListener() {
+        public void onClick(View v) {
 
-
-
-
+            Intent k = new Intent(Page3.this, Page2.class);
+            startActivity(k);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,14 +39,15 @@ public class Page3 extends AppCompatActivity {
         setContentView(R.layout.activity_page3);
 
 
-        GlobalUser gN = (GlobalUser)getApplication();
-        if(gN.getIf())
-        {
-
-        }
-        else
-        {
+        gN = (GlobalUser) getApplication();
+        if (gN.getIf()) {
+            // todo add what we need to do once the user already exist
+            // todo remove duplicates
+        } else {
+            // default that getIf vector is setup = false
+            // we needed to change that to true once we set the vector.
             gN.setUpVectors();
+            gN.setIf(true);
         }
 
         int arrSize = gN.getArrSize();
@@ -55,6 +63,7 @@ public class Page3 extends AppCompatActivity {
         int lev;
         String name;
 
+        // why ?
         gN.addLevelArray(0);
         gN.addNameArray("");
 
@@ -69,9 +78,6 @@ public class Page3 extends AppCompatActivity {
 
 
 
-
-
-
         int pos;
         for (i = 0; i<arrSize; i++)
         {
@@ -80,13 +86,12 @@ public class Page3 extends AppCompatActivity {
                 if(i == arrSize - 1)
                 {
 
-                }
-                else
-                {
+                } else {
                     for(int j = arrSize; j >i; j--)
                     {
                         pos = j-1;
 
+                        // todo check why crash if the level gets above current max.
                         levelArray[j] = levelArray[pos];
                         nameArray[j] = nameArray[pos];
                     }
@@ -101,8 +106,14 @@ public class Page3 extends AppCompatActivity {
         //arrSize++;
 
         for (i = 0; i<arrSize; i++){
+            // we check if the array we are dealing with does not have the exact name
+            // todo check why it is changing size of array and causing crash "out of boundry"
+//            if (gN.nameArray.contains(nameArray[i])) {
+//                System.out.println("duplicate name" + gN.nameArray.get(i) );
+//            } else {
             gN.setLevelArray(levelArray[i], i);
             gN.setNameArray(nameArray[i], i);
+//            }
         }
 
 
@@ -132,9 +143,9 @@ public class Page3 extends AppCompatActivity {
         home.setId(i);
         layout.addView(home);
         //home.setOnClickListener(homeListener);
-        home.setOnClickListener((View.OnClickListener) this);
+//        home.setOnClickListener((View.OnClickListener) this);
 
-
+        home.setOnClickListener(homeListener);
 
     }
 

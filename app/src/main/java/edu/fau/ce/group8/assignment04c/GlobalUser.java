@@ -5,6 +5,9 @@ package edu.fau.ce.group8.assignment04c;
  */
 
 import android.app.Application;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Vector;
 
 // class NamingConvention
@@ -21,6 +24,7 @@ public class GlobalUser extends Application {
     Vector<String> nameArray = new Vector();
 
 
+    // needs to be there form the instructor
     public void setUpVectors () {
         levelArray.add(3);
         levelArray.add(2);
@@ -28,12 +32,9 @@ public class GlobalUser extends Application {
         nameArray.add("Luke");
         nameArray.add("Jane");
         nameArray.add("Bill");
-
-
     }
 
-    // this does not look good for security,
-    // there should be a way better than using setters as public
+
     public int getArrSize(){return levelArray.size();}
 
 

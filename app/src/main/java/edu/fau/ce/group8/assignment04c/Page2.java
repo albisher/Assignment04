@@ -1,18 +1,24 @@
 package edu.fau.ce.group8.assignment04c;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Point;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,172 +28,118 @@ import android.content.Context;
 
 public class Page2 extends AppCompatActivity {
 
+    private Random rX = new Random();
+    private Random rY = new Random();
+    private Timer mvoeHunted = new Timer();
+    private TimerTask moleTask = new MoleTimerTask(Page2.this);
 
     private int hits = 0; // number of spots hit
-
     private int level = 1;
     private int levelcap = level*10;
     private TextView hitsTextView; // displays high score
     private TextView missesTextView; // displays current score
     private Button submit;
-    private ImageView moleImage;
-    private ImageView topmissingImage;
-    private ImageView bottommissingImage;
+    private ImageView huntedImg;
     private ProgressBar levelBar;
-    Random  rX = new Random();
-    Random rY = new Random();
-    Timer moveMole = new Timer();
-    TimerTask moleTask = new MoleTimerTask(Page2.this);
-
-
-
     private Handler mHandler = new Handler();
 
+    private LinearLayout nB;
+    private GlobalUser gN;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_page2);
-
-        submit = (Button) findViewById(R.id.endgame);
-        submit.setOnClickListener(sListener);
-
-        levelBar = (ProgressBar) findViewById(R.id.progressBar2);
-
-
-        Button resetButton = (Button) findViewById(R.id.button1);
-        resetButton.setOnClickListener(resetListener);
-
-        hitsTextView = (TextView) findViewById(R.id.highScoreTextView);
-        missesTextView = (TextView) findViewById(
-                R.id.scoreTextView);
-
-
-        moleImage = (ImageView) findViewById(R.id.themole);
-        moleImage.setOnClickListener(moleListener);
-        moleImage.bringToFront();
-
-        GlobalUser gN = (GlobalUser)getApplication();
-        int diff = gN.getDiff();
-
-        if(diff == 0){
-            moveMole.scheduleAtFixedRate(moleTask, 0, 2500);}
-        if (diff == 1){
-            moveMole.scheduleAtFixedRate(moleTask, 0, 1000);
-        }
-
-
-        topmissingImage = (ImageView) findViewById(R.id.topmissingView);
-        topmissingImage.setOnClickListener(topmissListener);
-        topmissingImage.setAlpha(0);
-
-        bottommissingImage = (ImageView) findViewById(R.id.bottommissingView);
-        bottommissingImage.setOnClickListener(bottommissListener);
-        bottommissingImage.setAlpha(0);
-    }
-
-
-    public class MoleTimerTask extends TimerTask {
-
-        private Context context;
-        // Write Custom Constructor to pass Context
-        public MoleTimerTask(Context con) {
-            this.context = con;
-        }
-        public void run() {
-
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            moleImage.setX(rX.nextInt(1000));
-                            moleImage.setY(rY.nextInt(500));
-
-
-                        }
-                    });
-                }
-
-            }).start();
-
-        }
-
-    }
-
-    private OnClickListener topmissListener = new OnClickListener() {
+    private OnClickListener missListener = new OnClickListener() {
         public void onClick(View v) {
+            System.out.println("Miss");
             //misses ++;
             hits--;
             displayScores();
-
-
         }
     };
 
-    private OnClickListener bottommissListener = new OnClickListener() {
-        public void onClick(View v) {
-            //misses ++;
-            hits--;
-            displayScores();
-
-
-        }
-    };
-
-
-    private OnClickListener moleListener = new OnClickListener() {
+    private OnClickListener huntedListener = new OnClickListener() {
         public void onClick(View v) {
             hits ++;
-
             displayScores();
-
-
         }
     };
-
 
     private OnClickListener resetListener = new OnClickListener() {
         public void onClick(View v) {
-
             hits = 0;
             //misses = 0;
             level = 0;
             displayScores();
             Intent k = new Intent(Page2.this, Page1.class);
             startActivity(k);
-
         }
     };
 
+    // submit button listener
     private OnClickListener sListener = new OnClickListener() {
         public void onClick(View v) {
-
-            GlobalUser gN = (GlobalUser)getApplication();
             gN.setLevel(level);
 
             Intent k = new Intent(Page2.this, Page3.class);
             startActivity(k);
-
         }
     };
 
+    // functions added to help get the size of the screen.
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_page2);
+
+        huntedImg = (ImageView) findViewById(R.id.theduck);
+        huntedImg.setOnClickListener(huntedListener);
+        huntedImg.bringToFront();
+
+        submit = (Button) findViewById(R.id.endgame);
+        submit.setOnClickListener(sListener);
+
+        levelBar = (ProgressBar) findViewById(R.id.progressBar2);
+
+        Button resetButton = (Button) findViewById(R.id.button1);
+        resetButton.setOnClickListener(resetListener);
+
+        hitsTextView = (TextView) findViewById(R.id.highScoreTextView);
+        missesTextView = (TextView) findViewById(R.id.scoreTextView);
+
+        // there click is not on huntedImg
+        nB = (LinearLayout) findViewById(R.id.mainScreen);
+        nB.setOnClickListener(missListener);
+
+        gN = (GlobalUser) getApplication();
+        int diff = gN.getDiff();
+
+        //?
+        if (diff == 0) {
+            mvoeHunted.scheduleAtFixedRate(moleTask, 0, 2500);
+        }
+        if (diff == 1) {
+            mvoeHunted.scheduleAtFixedRate(moleTask, 0, 1000);
+        }
+
+    }
 
     private void displayScores()
     {
         // display the high score, current score and level
-        if (hits==levelcap)
-        {
+        if (hits == levelcap) {
             level++;
             levelcap = level*10;
             hits = 0;
 
         }
-        if (hits < 0)
-        {
+
+        if (hits < 0) {
             if (level > 1)
             {
                 level--;
@@ -205,17 +157,10 @@ public class Page2 extends AppCompatActivity {
         levelBar.setProgress(hits);
 
 
+        hitsTextView.setText(getString(R.string.hit_score) + " " + hits);
 
-
-
-        hitsTextView.setText(
-                getString(R.string.hit_score) + " " + hits);
-
-        missesTextView.setText(
-                getString(R.string.misses) + " " + level);
+        missesTextView.setText(getString(R.string.misses) + " " + level);
     } // end function displayScores
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -237,5 +182,38 @@ public class Page2 extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class MoleTimerTask extends TimerTask {
+
+        private Context context;
+
+        // Write Custom Constructor to pass Context
+        public MoleTimerTask(Context con) {
+            this.context = con;
+        }
+
+        public void run() {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // todo huntedImg needs to not to go out side the screen
+                            // the following System.prinnt helps to see the number passed in the
+                            // function below
+//                            System.out.println("width = "+ rX.nextInt(getScreenWidth()));
+//                            System.out.println("height = " + rY.nextInt(getScreenHeight()));
+                            huntedImg.bringToFront();
+                            huntedImg.setX(rX.nextInt(getScreenWidth()) - (huntedImg.getWidth() / 2));
+                            huntedImg.setY(rY.nextInt(getScreenHeight()) - (huntedImg.getHeight() / 2));
+                        }
+                    });
+                }
+
+            }).start();
+        }
     }
 }
