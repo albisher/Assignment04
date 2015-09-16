@@ -18,6 +18,7 @@ import static edu.fau.ce.group8.assignment04c.R.id.linearLayout3;
 
 public class Page3 extends AppCompatActivity {
 
+    // todo ask if better to use vector of GlobalUser ?
     private Vector<Integer> levelArray = new Vector();
     private Vector<String> nameArray = new Vector();
 
