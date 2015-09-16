@@ -18,7 +18,6 @@ import static edu.fau.ce.group8.assignment04c.R.id.linearLayout3;
 
 public class Page3 extends AppCompatActivity {
 
-    // todo ask if better to use vector of GlobalUser ?
     private Vector<Integer> levelArray = new Vector();
     private Vector<String> nameArray = new Vector();
 
@@ -29,7 +28,7 @@ public class Page3 extends AppCompatActivity {
     private View.OnClickListener homeListener = new View.OnClickListener() {
         public void onClick(View v) {
 
-            Intent k = new Intent(Page3.this, Page2.class);
+            Intent k = new Intent(Page3.this, Page1.class);
             startActivity(k);
         }
     };
@@ -38,7 +37,6 @@ public class Page3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page3);
-
 
         gN = (GlobalUser) getApplication();
         if (gN.getIf()) {
@@ -74,7 +72,6 @@ public class Page3 extends AppCompatActivity {
             name = gN.getNameArray(i);
             levelArray[i] = lev;
             nameArray[i] = name;
-
         }
 
 
@@ -144,7 +141,6 @@ public class Page3 extends AppCompatActivity {
         home.setId(i);
         layout.addView(home);
         //home.setOnClickListener(homeListener);
-//        home.setOnClickListener((View.OnClickListener) this);
 
         home.setOnClickListener(homeListener);
 

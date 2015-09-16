@@ -100,4 +100,10 @@
         android:layout_gravity="center"
         android:src="@drawable/duck" />
 
+    <ImageView
+        android:id="@+id/shoot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/shoot" />
+
 </RelativeLayout>

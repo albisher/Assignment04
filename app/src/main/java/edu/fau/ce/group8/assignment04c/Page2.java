@@ -2,13 +2,9 @@ package edu.fau.ce.group8.assignment04c;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Point;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.Random;
@@ -18,7 +14,6 @@ import java.util.TimerTask;
 import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,7 +25,7 @@ public class Page2 extends AppCompatActivity {
 
     private Random rX = new Random();
     private Random rY = new Random();
-    private Timer mvoeHunted = new Timer();
+    private Timer moveHunted = new Timer();
     private TimerTask moleTask = new MoleTimerTask(Page2.this);
 
     private int hits = 0; // number of spots hit
@@ -40,17 +35,22 @@ public class Page2 extends AppCompatActivity {
     private TextView missesTextView; // displays current score
     private Button submit;
     private ImageView huntedImg;
+    private ImageView shoot;
     private ProgressBar levelBar;
     private Handler mHandler = new Handler();
 
     private LinearLayout nB;
     private GlobalUser gN;
 
+
     private OnClickListener missListener = new OnClickListener() {
         public void onClick(View v) {
             System.out.println("Miss");
             //misses ++;
             hits--;
+
+            shoot.setVisibility(View.INVISIBLE);
+            //
             displayScores();
         }
     };
@@ -58,6 +58,13 @@ public class Page2 extends AppCompatActivity {
     private OnClickListener huntedListener = new OnClickListener() {
         public void onClick(View v) {
             hits ++;
+
+            //
+            // show the shooting mark on the click x,y
+            shoot.setX(v.getX());
+            shoot.setY(v.getY());
+            shoot.setVisibility(View.VISIBLE);
+            //
             displayScores();
         }
     };
@@ -83,6 +90,7 @@ public class Page2 extends AppCompatActivity {
         }
     };
 
+
     // functions added to help get the size of the screen.
     public static int getScreenWidth() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -96,6 +104,9 @@ public class Page2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page2);
+
+        shoot = (ImageView) findViewById(R.id.shoot);
+        shoot.setVisibility(View.INVISIBLE);
 
         huntedImg = (ImageView) findViewById(R.id.theduck);
         huntedImg.setOnClickListener(huntedListener);
@@ -121,10 +132,10 @@ public class Page2 extends AppCompatActivity {
 
         //?
         if (diff == 0) {
-            mvoeHunted.scheduleAtFixedRate(moleTask, 0, 2500);
+            moveHunted.scheduleAtFixedRate(moleTask, 0, 2500);
         }
         if (diff == 1) {
-            mvoeHunted.scheduleAtFixedRate(moleTask, 0, 1000);
+            moveHunted.scheduleAtFixedRate(moleTask, 0, 1000);
         }
 
     }
