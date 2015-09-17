@@ -18,14 +18,11 @@ import static edu.fau.ce.group8.assignment04c.R.id.linearLayout3;
 
 public class Page3 extends AppCompatActivity {
 
-    private Vector<Integer> levelArray = new Vector();
-    private Vector<String> nameArray = new Vector();
-
     private GlobalUser gN;
     private int pos;
-    //private int levelArray[] = new int[]
-    //LinearLayout layout;
-    //LinearLayout.LayoutParams layoutParams;
+
+    private Integer topUsersNumber = 10;
+
     private View.OnClickListener homeListener = new View.OnClickListener() {
         public void onClick(View v) {
 
@@ -40,18 +37,13 @@ public class Page3 extends AppCompatActivity {
         setContentView(R.layout.activity_page3);
 
         gN = (GlobalUser) getApplication();
-        if (gN.getIf()) {
-            // todo add what we need to do once the user already exist
-            // todo remove duplicates
-        } else {
-            // default that getIf vector is setup = false
-            // we needed to change that to true once we set the vector.
+        if (!gN.getIf()) {//changed this statement to check for it being empty instead of full
             gN.setUpVectors();
             gN.setIf(true);
         }
 
-        int arrSize = gN.getArrSize();
-        arrSize++;
+        int arrSize = gN.getArrSize();//get number of entries before new add
+        arrSize++;//add one to number of entries to prepare for new add
 
         int levelArray[] = new int[arrSize];
         String nameArray[] = new String[arrSize];
@@ -63,11 +55,12 @@ public class Page3 extends AppCompatActivity {
         int lev;
         String name;
 
-        // why ?
-        gN.addLevelArray(0);
+        gN.addLevelArray(0);//pushes an extra cell into the vector to accomodate new addition.
+        // Want it to start blank so new addition can be placed in correct order
         gN.addNameArray("");
 
-        for (i = 0; i < arrSize; i++)
+        for (i = 0; i < arrSize; i++)//fills array with data from global vectors
+        //the last position ( Array[arrSize -1] ) will have level 0 and and name " "
         {
             lev = gN.getLevelArray(i);
             name = gN.getNameArray(i);
@@ -75,82 +68,80 @@ public class Page3 extends AppCompatActivity {
             nameArray[i] = name;
         }
 
-
-
-
+        int done = 0;
         for (i = 0; i<arrSize; i++)
         {
-            if(currentLevel > gN.getLevelArray(i))
+            if (currentLevel > levelArray[i] && done == 0)
             {
-                if(i == arrSize - 1)
+                if (i == arrSize - 1)//need to not shift down if it's the last position
                 {
+                    levelArray[i] = currentLevel;
+                    nameArray[i] = currentName;
+                    done = 1;
 
                 } else {
-                    for(int j = arrSize; j >i; j--)
+                    for (int j = arrSize - 1; j > i; j--)//sets j to last cell
+                    //iterates until it gets to spot we want to put the new score into
+                    //so the array gets shifted down from the spot of the new insert
                     {
-                        pos = j-1;
+                        pos = j - 1;//always the cell right before j
 
                         // todo check why crash if the level gets above current max.
-                        levelArray[j] = levelArray[pos];
+                        levelArray[j] = levelArray[pos];//shifts everything down a cell up to wanted position
                         nameArray[j] = nameArray[pos];
                     }
+                    levelArray[i] = currentLevel;//sets new entry into its place in array
+                    nameArray[i] = currentName;
+                    done = 1;//breaks out of loop so entire array under new score isn't set to new entry
                 }
-                levelArray[i] = currentLevel;
-                nameArray[i] = currentName;
-                pos = i;
-                i = arrSize;
+
+                pos = i;//sets pos to index of newest addition in array
+                //i = arrSize;
             }
         }
 
-        //arrSize++;
 
-        for (i = 0; i<arrSize; i++){
-            // we check if the array we are dealing with does not have the exact name
-            // todo check why it is changing size of array and causing crash "out of boundry"
-//            if (gN.nameArray.contains(nameArray[i])) {
-//                System.out.println("duplicate name" + gN.nameArray.get(i) );
-//            } else {
+        for (i = 0; i < arrSize; i++) {//copies new array from Page3 to global vector.
             gN.setLevelArray(levelArray[i], i);
             gN.setNameArray(nameArray[i], i);
-//            }
         }
 
-
         LinearLayout layout = (LinearLayout) findViewById(R.id.linearLayout3);
-        for (i = 0; i < arrSize; i++) {
+
+
+        // to display only the desired number set in topUserNumber
+        int forLimit = topUsersNumber;
+        if (topUsersNumber > arrSize) {
+            forLimit = arrSize;
+        }
+
+        for (i = 0; i < forLimit; i++) {
             Button btnTag = new Button(this);
-            btnTag.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            btnTag.setText(nameArray[i] + " Level " + levelArray[i]);
-            btnTag.setId(i);
-
-
+            // addButton(btnName, Text, id)
+            addButton(btnTag, (nameArray[i] + " Level " + levelArray[i]), i);
             layout.addView(btnTag);
-
-//            if ( pos == i ) {
-//            }
-
-            //((Button) findViewById(i)).setOnClickListener(this);
         }
 
         i++;
 
         Button blank = new Button(this);
-        blank.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        blank.setText("");
-        blank.setId(i);
+        addButton(blank, "", i);
         layout.addView(blank);
 
         i++;
 
         Button home = new Button(this);
-        home.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        home.setText("Start Over");
-        home.setId(i);
+        ;
+        addButton(home, "Start Over", i);
         layout.addView(home);
-        //home.setOnClickListener(homeListener);
-
         home.setOnClickListener(homeListener);
 
+    }
+
+    private void addButton(Button name, String text, int i) {
+        name.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        name.setText(text);
+        name.setId(i);
     }
 
     @Override

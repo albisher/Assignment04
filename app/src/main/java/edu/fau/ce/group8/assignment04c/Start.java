@@ -11,6 +11,11 @@ import android.content.Intent;
 public class Start extends AppCompatActivity {
 
     protected Button start;
+    private View.OnClickListener startListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            startF();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +25,6 @@ public class Start extends AppCompatActivity {
         start = (Button) findViewById(R.id.start);
         start.setOnClickListener(startListener);
     }
-
-    private View.OnClickListener startListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            startF();
-        }
-    };
 
     private void startF() {
         Intent k = new Intent(Start.this, Page1.class);

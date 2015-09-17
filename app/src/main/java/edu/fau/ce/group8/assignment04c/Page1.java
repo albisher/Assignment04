@@ -21,14 +21,43 @@ public class Page1 extends AppCompatActivity {
     protected EditText pass;
     protected TextView age;
     protected SeekBar sBar;
-
-    private RadioGroup radiogroup;
-    private RadioButton male, female;
-
-    private Switch mode;
-
     protected int sBarValue = 0;
     protected String s = null;
+    private RadioGroup radiogroup;
+    private RadioButton male, female;
+    private Switch mode;
+    private View.OnClickListener submitListener = new View.OnClickListener() {
+        public void onClick(View v) {
+
+            GlobalUser gN = (GlobalUser) getApplication();
+            //submitF();
+            gN.setName(name.getText().toString());
+            gN.setPass(pass.getText().toString());
+            gN.setAge(age.getText().toString());
+
+            int selectedId = radiogroup.getCheckedRadioButtonId();
+            if (selectedId == male.getId()) {
+                gN.setGender("Male");
+            }
+            if (selectedId == female.getId()) {
+                gN.setGender("Female");
+            }
+
+            if (mode.isChecked()) {
+                gN.setDiff(1);
+            } else {
+                gN.setDiff(0);
+            }
+
+
+            submitF();
+        }
+    };
+    private View.OnClickListener startListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            startF();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,48 +102,11 @@ public class Page1 extends AppCompatActivity {
         });
     }
 
-
-    private View.OnClickListener submitListener = new View.OnClickListener() {
-        public void onClick(View v) {
-
-            GlobalUser gN = (GlobalUser)getApplication();
-            //submitF();
-            gN.setName(name.getText().toString());
-            gN.setPass(pass.getText().toString());
-            gN.setAge(age.getText().toString());
-
-            int selectedId = radiogroup.getCheckedRadioButtonId();
-            if (selectedId == male.getId()){
-                gN.setGender("Male");}
-            if (selectedId == female.getId()){
-                gN.setGender("Female");
-            }
-
-            if(mode.isChecked()){
-                gN.setDiff(1);
-            }
-            else {
-                gN.setDiff(0);
-            }
-
-
-            submitF();
-        }
-    };
-
-
-
     private void submitF() {
         Intent p2 = new Intent(Page1.this, Page2.class );
         startActivity(p2);
 
     }
-
-    private View.OnClickListener startListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            startF();
-        }
-    };
 
     private void startF() {
         Intent k = new Intent(Page1.this, Start.class);

@@ -143,24 +143,24 @@ public class Page2 extends AppCompatActivity {
     private void displayScores()
     {
         // display the high score, current score and level
-        if (hits == levelcap) {
+        if (hits == levelcap) {//increases a level
             level++;
-            levelcap = level*10;
-            hits = 0;
+            levelcap = level * 10; //sets the new goal for next level
+            hits = 0; //starts you at 0 for the next level
 
         }
 
-        if (hits < 0) {
+        if (hits < 0) {//if a miss occurs when at 0 for the level, sets back a level
+            if (level == 1) {
+                hits = 0;
+            }
             if (level > 1)
             {
                 level--;
                 levelcap = level*10;
-                hits = 0;
+                hits = levelcap - 1;//sets you to one less than the max needed to advance to next level]
             }
-            if (level == 1)
-            {
-                hits = 0;
-            }
+
         }
 
 
