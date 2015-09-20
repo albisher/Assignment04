@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -39,10 +40,8 @@ public class Page2 extends AppCompatActivity {
     private ProgressBar levelBar;
     private Handler mHandler = new Handler();
 
-    private LinearLayout nB;
-    private GlobalUser gN;
-
-
+    private LinearLayout linearLayout;
+    private GlobalUser globalUser;
     private OnClickListener missListener = new OnClickListener() {
         public void onClick(View v) {
             System.out.println("Miss");
@@ -53,8 +52,8 @@ public class Page2 extends AppCompatActivity {
             //
             displayScores();
         }
-    };
 
+    };
     private OnClickListener huntedListener = new OnClickListener() {
         public void onClick(View v) {
             hits ++;
@@ -67,8 +66,8 @@ public class Page2 extends AppCompatActivity {
             //
             displayScores();
         }
-    };
 
+    };
     private OnClickListener resetListener = new OnClickListener() {
         public void onClick(View v) {
             hits = 0;
@@ -79,17 +78,17 @@ public class Page2 extends AppCompatActivity {
             startActivity(k);
         }
     };
-
     // submit button listener
     private OnClickListener sListener = new OnClickListener() {
         public void onClick(View v) {
-            gN.setLevel(level);
+            globalUser.setLevel(level);
+
+            System.out.println("User name is P1 " + globalUser.getName());
 
             Intent k = new Intent(Page2.this, Page3.class);
             startActivity(k);
         }
     };
-
 
     // functions added to help get the size of the screen.
     public static int getScreenWidth() {
@@ -123,20 +122,31 @@ public class Page2 extends AppCompatActivity {
         hitsTextView = (TextView) findViewById(R.id.highScoreTextView);
         missesTextView = (TextView) findViewById(R.id.scoreTextView);
 
-        // there click is not on huntedImg
-        nB = (LinearLayout) findViewById(R.id.mainScreen);
-        nB.setOnClickListener(missListener);
+        // if the click is not on huntedImg
+        linearLayout = (LinearLayout) findViewById(R.id.mainScreen);
+        linearLayout.setOnClickListener(missListener);
 
-        gN = (GlobalUser) getApplication();
-        int diff = gN.getDiff();
+        globalUser = (GlobalUser) getApplication();
+        Integer diff = globalUser.getDiff();
 
-        //?
-        if (diff == 0) {
+        System.out.println("diff = " + diff);
+        //this hard-codded numbers control the speed of the game in microSeconds
+        if (diff.equals(0)) {
             moveHunted.scheduleAtFixedRate(moleTask, 0, 2500);
         }
-        if (diff == 1) {
+        if (diff.equals(1)) {
             moveHunted.scheduleAtFixedRate(moleTask, 0, 1000);
         }
+
+
+        // todo remove levelBar listener before submitting this assignment
+        levelBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                level++;
+                displayScores();
+            }
+        });
 
     }
 
@@ -195,6 +205,7 @@ public class Page2 extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public class MoleTimerTask extends TimerTask {
 
         private Context context;
@@ -218,8 +229,8 @@ public class Page2 extends AppCompatActivity {
 //                            System.out.println("width = "+ rX.nextInt(getScreenWidth()));
 //                            System.out.println("height = " + rY.nextInt(getScreenHeight()));
                             huntedImg.bringToFront();
-                            huntedImg.setX(rX.nextInt(getScreenWidth()) - (huntedImg.getWidth() / 2));
-                            huntedImg.setY(rY.nextInt(getScreenHeight()) - (huntedImg.getHeight() / 2));
+                            huntedImg.setX(rX.nextInt(getScreenWidth() - (huntedImg.getWidth())));
+                            huntedImg.setY(rY.nextInt(getScreenHeight() - (huntedImg.getHeight()) - 20));
                         }
                     });
                 }

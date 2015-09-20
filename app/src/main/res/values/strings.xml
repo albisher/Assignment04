@@ -23,5 +23,7 @@
 
     <string name="endgame">Submit</string>
     <string name="resetgame">Restart</string>
+    <string name="diff">diff</string>
+    <string name="titleP4">Score Details</string>
 
 </resources>

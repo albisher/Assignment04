@@ -23,36 +23,43 @@ public class Page1 extends AppCompatActivity {
     protected SeekBar sBar;
     protected int sBarValue = 0;
     protected String s = null;
+
+    private GlobalUser globalUser;
+
     private RadioGroup radiogroup;
     private RadioButton male, female;
     private Switch mode;
+
+
     private View.OnClickListener submitListener = new View.OnClickListener() {
         public void onClick(View v) {
 
-            GlobalUser gN = (GlobalUser) getApplication();
-            //submitF();
-            gN.setName(name.getText().toString());
-            gN.setPass(pass.getText().toString());
-            gN.setAge(age.getText().toString());
+            globalUser = (GlobalUser) getApplication();
+
+            // for easier understanding to the code created new empty GlobalUser,
+            // then started to fill it item by item.
+            globalUser.setName(name.getText().toString());
+            globalUser.setPass(pass.getText().toString());
+            globalUser.setAge(age.getText().toString());
 
             int selectedId = radiogroup.getCheckedRadioButtonId();
+
             if (selectedId == male.getId()) {
-                gN.setGender("Male");
-            }
-            if (selectedId == female.getId()) {
-                gN.setGender("Female");
+                globalUser.setGender("Male");
+            } else if (selectedId == female.getId()) {
+                globalUser.setGender("Female");
             }
 
             if (mode.isChecked()) {
-                gN.setDiff(1);
+                globalUser.setDiff(1);
             } else {
-                gN.setDiff(0);
+                globalUser.setDiff(0);
             }
-
 
             submitF();
         }
     };
+
     private View.OnClickListener startListener = new View.OnClickListener() {
         public void onClick(View v) {
             startF();
@@ -84,7 +91,6 @@ public class Page1 extends AppCompatActivity {
 
         sBar = (SeekBar) findViewById(R.id.seekBar);
         sBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 sBarValue = progress;
                 s = Integer.toString(sBarValue);
@@ -103,6 +109,8 @@ public class Page1 extends AppCompatActivity {
     }
 
     private void submitF() {
+        System.out.println("Global User name " + globalUser.getName());
+
         Intent p2 = new Intent(Page1.this, Page2.class );
         startActivity(p2);
 
