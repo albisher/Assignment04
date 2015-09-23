@@ -80,14 +80,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="@string/resetgame" />
+                android:text="@string/resetgame"
+                android:background="@color/red"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/endgame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
-                android:text="@string/endgame" />
+                android:text="@string/endgame"
+                android:background="@color/green"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp" />
 
         </LinearLayout>
 

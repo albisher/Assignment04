@@ -1,7 +1,10 @@
 package edu.fau.ce.group8.assignment04c;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -49,7 +52,18 @@ public class Page4 extends AppCompatActivity {
         Button home = new Button(this);
         addButton(home, "Start Over", 1);
         layout.addView(home);
-        // padding left, top, right, bottom. all int
+
+        home.setBackgroundResource(R.color.red);
+        home.setTextColor(getResources().getColor(R.color.white));
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        params.topMargin = 10;
+        params.width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
+        home.setLayoutParams(params);
 
         home.setOnClickListener(homeListener);
 

@@ -1,6 +1,7 @@
 package edu.fau.ce.group8.assignment04c;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -108,6 +109,13 @@ public class Page3 extends AppCompatActivity {
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.linearLayout3);
 
+        // pre-setting the layout for buttons
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.topMargin = 10;
+        params.width = Resources.getSystem().getDisplayMetrics().widthPixels;
+
         // to display only the desired number set in topUserNumber
         int forLimit = topUsersNumber;
         if (topUsersNumber > arrSize) {
@@ -121,8 +129,22 @@ public class Page3 extends AppCompatActivity {
             addButton(btnTag, (nameArray[i] + " Level " + levelArray[i]), i);
             layout.addView(btnTag); //show (i) button in layout
 
+            // using this app defined color.xml under values
+            // color for all is transparent white
+            btnTag.setBackgroundResource(R.color.t_white);
+            btnTag.setTextColor(getResources().getColor(R.color.dark_blue));
+
+            // Setup the added button to have the preset layout
+            btnTag.setLayoutParams(params);
+
             //sets onclicklistener for current user
-            if(i == index) btnTag.setOnClickListener(btnListener);
+            if(i == index){
+                // using this app defined color.xml under values
+                // BG color for the clickable is white
+                btnTag.setBackgroundColor(getResources().getColor(R.color.white));
+                btnTag.setTextColor(getResources().getColor(R.color.dark_blue));
+                btnTag.setOnClickListener(btnListener);
+            }
 
             // todo link (i) button to that user details and goto p4 to show info there
             if (levelArray[i] > highestLevelUser) {
@@ -135,14 +157,19 @@ public class Page3 extends AppCompatActivity {
         Button blank = new Button(this);
         addButton(blank, "", i);
         layout.addView(blank);
-//        blank.setOnClickListener(btnListener);
+        blank.setBackgroundColor(getResources().getColor(R.color.t_white));
+        blank.setLayoutParams(params);
 
         i++;
 
         Button home = new Button(this);
         addButton(home, "Start Over", i);
         layout.addView(home);
+        // using this app defined color.xml under values
+        home.setBackgroundColor(getResources().getColor(R.color.red));
+        home.setTextColor(getResources().getColor(R.color.white));
         home.setOnClickListener(homeListener);
+        home.setLayoutParams(params);
 
     }
 
