@@ -68,6 +68,7 @@ public class Page3 extends AppCompatActivity {
             nameArray[i] = name;
         }
 
+        int index = 0;  //index of where to set onclicklistener
 //        int done = 0;
         for (i = 0; i<arrSize; i++)
         {
@@ -77,7 +78,7 @@ public class Page3 extends AppCompatActivity {
                 {
                     levelArray[i] = currentLevel;
                     nameArray[i] = currentName;
-
+                    index = i;
 
                 } else {
                     for (int j = arrSize - 1; j > i; j--)//sets j to last cell
@@ -90,6 +91,7 @@ public class Page3 extends AppCompatActivity {
                     }
                     levelArray[i] = currentLevel;//sets new entry into its place in array
                     nameArray[i] = currentName;
+                    index = i;
                 }
 
                 pos = i;//sets pos to index of newest addition in array
@@ -119,6 +121,9 @@ public class Page3 extends AppCompatActivity {
             addButton(btnTag, (nameArray[i] + " Level " + levelArray[i]), i);
             layout.addView(btnTag); //show (i) button in layout
 
+            //sets onclicklistener for current user
+            if(i == index) btnTag.setOnClickListener(btnListener);
+
             // todo link (i) button to that user details and goto p4 to show info there
             if (levelArray[i] > highestLevelUser) {
                 highestLevelUser = levelArray[i];
@@ -128,9 +133,9 @@ public class Page3 extends AppCompatActivity {
         i++;
 
         Button blank = new Button(this);
-        addButton(blank, "Latest Score Details", i);
+        addButton(blank, "", i);
         layout.addView(blank);
-        blank.setOnClickListener(btnListener);
+//        blank.setOnClickListener(btnListener);
 
         i++;
 

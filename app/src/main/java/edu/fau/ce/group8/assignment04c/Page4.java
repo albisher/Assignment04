@@ -1,7 +1,11 @@
 package edu.fau.ce.group8.assignment04c;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class Page4 extends AppCompatActivity {
@@ -39,6 +43,30 @@ public class Page4 extends AppCompatActivity {
         s = i.toString();
         level.setText("Level :" + s);
 
+        //Everything below is for home button
+        LinearLayout layout = (LinearLayout) findViewById(R.id.lowerLL);
+
+        Button home = new Button(this);
+        addButton(home, "Start Over", 1);
+        layout.addView(home);
+        // padding left, top, right, bottom. all int
+
+        home.setOnClickListener(homeListener);
+
     }
+
+    private void addButton(Button name, String text, Integer id) {
+        name.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        name.setText(text);
+        name.setId(id);
+    }
+
+    private View.OnClickListener homeListener = new View.OnClickListener() {
+        public void onClick(View v) {
+
+            Intent k = new Intent(Page4.this, Page1.class);
+            startActivity(k);
+        }
+    };
 
 }
